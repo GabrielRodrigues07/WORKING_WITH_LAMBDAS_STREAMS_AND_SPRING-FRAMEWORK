@@ -40,5 +40,11 @@ public class Principal {
         }
 
         dadosTemporadaList.forEach(System.out::println);
+        
+        dadosTemporadaList.forEach(dadosTemporada -> {
+            if (!dadosTemporada.episodios().isEmpty()) {
+                dadosTemporada.episodios().forEach(dadosEpisodio -> System.out.println(dadosEpisodio.titulo()));
+            }
+        });
     }
 }
