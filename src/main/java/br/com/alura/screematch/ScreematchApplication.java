@@ -2,11 +2,15 @@ package br.com.alura.screematch;
 
 import br.com.alura.screematch.model.DadosEpisodio;
 import br.com.alura.screematch.model.DadosSerie;
+import br.com.alura.screematch.model.DadosTemporada;
 import br.com.alura.screematch.service.ConsumoApi;
 import br.com.alura.screematch.service.ConverteDados;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootApplication
 public class ScreematchApplication implements CommandLineRunner {
@@ -28,5 +32,16 @@ public class ScreematchApplication implements CommandLineRunner {
 
 		System.out.println(dadosSerie);
 		System.out.println(dadosEpisodio);
+
+		List<DadosTemporada> dadosTemporadaList = new ArrayList<>();
+
+
+		for (int i = 1; i <= dadosSerie.totalTemporadas(); i++) {
+			String temporadaJson = service.obterDados("https://www.omdbapi.com/?apikey=afaa114e&t=supernatural&season=" + i);
+			DadosTemporada dadosTemporada = convert.obterDados(temporadaJson, DadosTemporada.class);
+			dadosTemporadaList.add(dadosTemporada);
+		}
+
+		dadosTemporadaList.forEach(System.out::println);
 	}
 }
