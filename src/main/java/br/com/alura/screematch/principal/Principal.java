@@ -6,10 +6,7 @@ import br.com.alura.screematch.model.Episodio;
 import br.com.alura.screematch.service.ConsumoApi;
 import br.com.alura.screematch.service.ConverteDados;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Principal {
@@ -66,20 +63,27 @@ public class Principal {
                         .map(dadosEpisodio -> new Episodio(dadosTemporada.numero(), dadosEpisodio)))
                 .collect(Collectors.toList());
 
-        System.out.println("Digite o titulo do episodio que deseja buscar: ");
-        var titulo = leitura.nextLine();
+//        System.out.println("Digite o titulo do episodio que deseja buscar: ");
+//        var titulo = leitura.nextLine();
+//
+//        Optional<Episodio> ep = episodioList.stream()
+//                .filter(episodio -> episodio.getTitulo().toUpperCase().contains(titulo.toUpperCase()))
+//                .findFirst();
+//
+//        if (ep.isPresent()) {
+//            System.out.println("Episodio encontrado!");
+//            System.out.println("Temporada " + ep.get().getTemporada());
+//        }
+//        else {
+//            System.out.println("Episodio não encontrado!");
+//        }
 
-        Optional<Episodio> ep = episodioList.stream()
-                .filter(episodio -> episodio.getTitulo().toUpperCase().contains(titulo.toUpperCase()))
-                .findFirst();
+        Map<Integer, Double> collect = episodioList.stream()
+                .filter(episodio -> episodio.getAvaliacao() > 0.0)
+                .collect(Collectors.groupingBy(Episodio::getTemporada, Collectors.averagingDouble(Episodio::getAvaliacao)));
 
-        if (ep.isPresent()) {
-            System.out.println("Episodio encontrado!");
-            System.out.println("Temporada " + ep.get().getTemporada());
-        }
-        else {
-            System.out.println("Episodio não encontrado!");
-        }
+        collect.forEach((temporada, avaliacao) -> System.out.printf("Temporada: %d - Avaliação: %.2f%n", temporada, avaliacao));
+
 //        episodioList.forEach(System.out::println);
 
 //        System.out.println("A partir de que ano você deseja ver os episódios? ");
