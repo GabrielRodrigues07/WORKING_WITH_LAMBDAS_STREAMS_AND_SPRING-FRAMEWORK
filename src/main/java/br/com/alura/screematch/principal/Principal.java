@@ -84,7 +84,15 @@ public class Principal {
 
         collect.forEach((temporada, avaliacao) -> System.out.printf("Temporada: %d - Avaliação: %.2f%n", temporada, avaliacao));
 
-//        episodioList.forEach(System.out::println);
+        DoubleSummaryStatistics doubleSummaryStatistics = episodioList.stream()
+                .filter(episodio -> episodio.getAvaliacao() > 0.0)
+                .collect(Collectors.summarizingDouble(Episodio::getAvaliacao));
+
+        System.out.printf(" Média: %.2f%n Melhor episódio: %.2f%n Pior episódio: %.2f%n Quantidade: %d",
+                doubleSummaryStatistics.getAverage(),
+                doubleSummaryStatistics.getMax(),
+                doubleSummaryStatistics.getMin(),
+                doubleSummaryStatistics.getCount());
 
 //        System.out.println("A partir de que ano você deseja ver os episódios? ");
 //        int ano = leitura.nextInt();
